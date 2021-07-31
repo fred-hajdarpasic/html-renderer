@@ -12,35 +12,40 @@ const Render: React.FC = () => {
                 const data = await response.text()
                 console.log(data)
                 setText(data)
+
+                ref.current!.innerHTML = data
+                const url = await toPng(ref.current!, { cacheBust: false })
+                console.log(url)
+                setDataUrl(url)
             }
         })()
     }, [])
 
-    const onButtonClick = useCallback(async () => {
-        if (ref.current === null) {
-            return
-        }
-        try {
-            const url = await toPng(ref.current, { cacheBust: true })
-            console.log(url)
-            setDataUrl(url)
-            const link = document.createElement('a')
-            link.download = 'my-image-name.png'
-            link.href = dataUrl
-            link.click()
-        } catch (error) {
-            console.log(error)
-        }
-    }, [ref])
+    // const onButtonClick = useCallback(async () => {
+    //     if (ref.current === null) {
+    //         return
+    //     }
+    //     try {
+    //         const url = await toPng(ref.current, { cacheBust: false })
+    //         console.log(url)
+    //         setDataUrl(url)
+    //         const link = document.createElement('a')
+    //         link.download = 'my-image-name.png'
+    //         link.href = dataUrl
+    //         link.click()
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }, [ref])
 
     return (
         <>
             <div ref={ref}>
-                <div>
+                {/* <div>
                     <div dangerouslySetInnerHTML={{ __html: text }}></div>
-                </div>
+                </div> */}
             </div>
-            <button onClick={onButtonClick}>Click me</button>
+            {/* <button onClick={onButtonClick}>Click me</button> */}
             <img src={dataUrl} />
         </>
     )
