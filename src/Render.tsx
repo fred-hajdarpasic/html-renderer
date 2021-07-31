@@ -7,7 +7,7 @@ const Render: React.FC = () => {
     const [dataUrl, setDataUrl] = React.useState('')
     useEffect(() => {
         ;(async () => {
-            const response = await fetch('trulli.html')
+            const response = await fetch('beauty.html')
             if (response.ok) {
                 const data = await response.text()
                 console.log(data)
@@ -24,10 +24,10 @@ const Render: React.FC = () => {
             const url = await toPng(ref.current, { cacheBust: true })
             console.log(url)
             setDataUrl(url)
-            // const link = document.createElement('a')
-            // link.download = 'my-image-name.png'
-            // link.href = dataUrl
-            // link.click()
+            const link = document.createElement('a')
+            link.download = 'my-image-name.png'
+            link.href = dataUrl
+            link.click()
         } catch (error) {
             console.log(error)
         }
@@ -36,7 +36,7 @@ const Render: React.FC = () => {
     return (
         <>
             <div ref={ref}>
-                <div style={{display:'none'}}>
+                <div>
                     <div dangerouslySetInnerHTML={{ __html: text }}></div>
                 </div>
             </div>
