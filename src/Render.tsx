@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { toPng } from 'html-to-image'
+import CSSInliner from 'css-inliner'
 
 const Render: React.FC = () => {
     const ref = useRef<HTMLDivElement>(null)
@@ -10,12 +11,20 @@ const Render: React.FC = () => {
             const response = await fetch('beauty.html')
             if (response.ok) {
                 const data = await response.text()
-                console.log(data)
-                setText(data)
+                // console.log(data)
 
-                ref.current!.innerHTML = data
+                const inliner = new CSSInliner({
+                    directory: 'stylesheets',
+                })
+
+                const inlined = await inliner.inlineCSSAsync(data)
+                console.log(`${inlined}`)
+
+                setText(inlined)
+
+                ref.current!.innerHTML = inlined
                 const url = await toPng(ref.current!, { cacheBust: false })
-                console.log(url)
+                // console.log(url)
                 setDataUrl(url)
             }
         })()
